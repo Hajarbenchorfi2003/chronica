@@ -12,7 +12,8 @@ class ArticleController extends Controller
     public function index()
     {
         $articles = Article::with('category', 'tags', 'comments')->get();
-        return view('articles.index', compact('articles'));
+        $categories = Category::with('articles')->get();
+        return view('articles.index', compact('articles','categories'));
     }
 
     // Afficher un article spécifique

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use App\Models\Article;
+use App\Models\Tag;
 
 class CategoryController extends Controller
 {
@@ -61,5 +63,20 @@ class CategoryController extends Controller
     {
         $category->delete();
         return redirect()->route('admin.categories.index')->with('success', 'Catégorie supprimée.');
+    }
+    public function show($slug)
+    {
+        // Récupérer la catégorie par son slug
+        $category = Category::where('slug', $slug)->firstOrFail();
+
+        // Récupérer les articles en vedette de la catégorie
+        $featuredArticles = Article::where('category_id', $category->id)
+            ->where('is_featured', true) // Si vous avez une colonne pour savoir si l'article est en vedette
+            ->paginate(6); // Nombre d'articles à afficher par page
+
+        // Récupérer tous les tags pour l'affichage des tags
+        $tags = Tag::all();
+
+        return view('category.show', compact('category', 'featuredArticles', 'tags'));
     }
 }

@@ -17,7 +17,7 @@ class HomeController extends Controller
 
      public function index()
      {
-         // Fetch featured articles, categories, and other data
+         
          $featuredArticles = Article::where('status', 'published')->latest()->take(5)->get();
          $categories = Category::with('articles')->get();
      

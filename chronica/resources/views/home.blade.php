@@ -36,9 +36,9 @@
                     @foreach($categories as $category)
                         <div class="position-relative overflow-hidden mb-3" style="height: 80px;">
                             <img class="img-fluid w-100 h-100" src="{{ asset('storage/' . $category->image) }}" style="object-fit: cover;">
-                            {{-- <a href="{{ route('categories.show', $category->slug) }}" class="overlay align-items-center justify-content-center h4 m-0 text-white text-decoration-none">
+                             <a href="{{ route('categories.show', $category->slug) }}" class="overlay align-items-center justify-content-center h4 m-0 text-white text-decoration-none">
                                 {{ $category->name }}
-                            </a> --}}
+                            </a> 
                         </div>
                     @endforeach
                 </div>
@@ -60,7 +60,7 @@
                         <img class="img-fluid w-100 h-100" src="{{ asset('storage/' . $article->cover_image) }}" style="object-fit: cover;">
                         <div class="overlay">
                             <div class="mb-1" style="font-size: 13px;">
-                                {{-- <a class="text-white" href="#">{{ $article->category->name ?? 'Uncategorized' }}</a> --}}
+                                 <a class="text-white" href="#">{{ $article->category->name ?? 'Uncategorized' }}</a>
                                 <span class="px-1 text-white">/</span>
                                 <a class="text-white" href="#">{{ $article->created_at->format('M d, Y') }}</a>
                             </div>
@@ -77,7 +77,7 @@
     <div class="container-fluid">
         <div class="container">
             <div class="row">
-             {{--    @foreach($categories as $category)
+                @foreach($categories as $category)
                     <div class="col-lg-6 py-3">
                         <div class="bg-light py-2 px-4 mb-3">
                             <h3 class="m-0">{{ $category->name }}</h3>
@@ -98,7 +98,7 @@
                             @endforeach
                         </div>
                     </div>
-                @endforeach --}}
+                @endforeach 
             </div>
         </div>
     </div>
