@@ -5,11 +5,15 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CommentController;
 
-Route::get('/', function () {
+ 
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+/* Route::get('/', function () {
     return view('welcome');
+}); */
+Route::get('/contact', function () {
+    return view('contact');
 });
-
-
 
 Route::middleware([
     'auth:sanctum',
@@ -18,7 +22,13 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
 });
-Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
+Route::get('/blog', [ArticleController::class, 'index'])->name('articles.index');
+Route::get('/blog/create', [ArticleController::class, 'create'])->name('articles.create');
+Route::post('/blog', [ArticleController::class, 'store'])->name('articles.store');
+Route::get('/dashboard', function () {
+    return view('dashboard'); // Assure-toi d'avoir un fichier "dashboard.blade.php" dans "resources/views"
+})->name('dashboard');
+
 use App\Http\Controllers\AdminController;
 
 Route::middleware(['auth'])->group(function () {

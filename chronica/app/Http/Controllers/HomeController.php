@@ -1,8 +1,10 @@
 <?php
 namespace App\Http\Controllers;
-
+use App\Models\Article;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
 
 class HomeController extends Controller
 {
@@ -11,16 +13,16 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
-    public function index()
-    {
-        $user = Auth::user();  // Récupère l'utilisateur actuellement authentifié
-        
-        // Si l'utilisateur est un admin
-        if ($user->isAdmin()) {
-            return redirect()->route('admin.dashboard');  // Redirige vers le tableau de bord admin
-        }
+    
 
-        // Sinon, redirige vers la page des articles
-        return redirect()->route('articles.index');  // Remplace 'articles.index' par la route de ta page des articles
-    }
+     public function index()
+     {
+         // Fetch featured articles, categories, and other data
+         $featuredArticles = Article::where('status', 'published')->latest()->take(5)->get();
+         $categories = Category::with('articles')->get();
+     
+         return view('home', compact('featuredArticles', 'categories'));
+     }
 }
+ 
+
