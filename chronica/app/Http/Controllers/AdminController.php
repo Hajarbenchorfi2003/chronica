@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Article;
 use App\Models\Comment;
+use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
@@ -20,8 +21,14 @@ class AdminController extends Controller
 
         $totalArticles = Article::count();
         $publishedArticles = Article::where('status', 'published')->count(); // Assuming 'status' is the field that determines whether an article is published
-    
+        $totalCategories = Category::count();
+          $activeUsers = User::where('status', 'active')->count();
 
+// ✅ Récupérer les 5 articles les plus récents
+$recentArticles = Article::latest()->take(5)->get();
+
+// ✅ Récupérer les 5 derniers commentaires
+$recentComments = Comment::latest()->take(5)->get();
         // Récupérer les données nécessaires
         $data = [
             'totalUsers' => User::count(),
@@ -31,7 +38,7 @@ class AdminController extends Controller
             'pendingComments' => Comment::where('status', 'pending')->count(),
         ];
 
-        return view('admin.dashboard', $data);
+        return view('admin.dashboard', $data, compact('totalCategories', 'activeUsers', 'recentArticles', 'recentComments'));
     }
 
     public function users()

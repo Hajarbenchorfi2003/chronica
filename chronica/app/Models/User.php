@@ -73,5 +73,9 @@ public function isUser()
 {
     return $this->role === 'user';
 }
+public function likedArticles()
+{
+    return $this->belongsToMany(Article::class, 'article_user');
+}
 
 }

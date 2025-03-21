@@ -112,4 +112,59 @@ class ArticleController extends Controller
         $article->delete();
         return redirect()->route('articles.index');
     }
+    public function articlesByCategory($slug)
+{
+    $category = Category::where('slug', $slug)->firstOrFail();
+    $articles = $category->articles()->latest()->paginate(10);
+
+    return view('articles.index', compact('category', 'articles'));
+}
+public function articlesByTag($slug)
+{
+    $tag = Tag::where('slug', $slug)->firstOrFail();
+    $articles = $tag->articles()->latest()->paginate(10);
+
+    return view('articles.index', compact('tag', 'articles'));
+}
+public function search(Request $request)
+    {
+        $query = Article::query();
+
+        if ($request->has('title')) {
+            $query->where('title', 'like', '%' . $request->title . '%');
+        }
+
+        if ($request->has('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        if ($request->has('tag')) {
+            $query->whereHas('tags', function ($query) use ($request) {
+                $query->where('tags.name', 'like', '%' . $request->tag . '%');
+            });
+        }
+
+        $articles = $query->get();
+
+        return view('articles.index', compact('articles'));
+    }
+
+    public function like($articleId)
+    {
+        $article = Article::findOrFail($articleId); // Récupère l'article
+
+        $user = auth()->user(); // Utilisateur connecté
+
+        // Vérifie si l'utilisateur a déjà liké cet article
+        if ($article->likes()->where('user_id', $user->id)->exists()) {
+            // Si l'utilisateur a déjà liké, il retire son like
+            $article->likes()->detach($user);
+            return back()->with('success', 'Vous avez retiré votre like.');
+        } else {
+            // Si l'utilisateur n'a pas liké, il ajoute un like
+            $article->likes()->attach($user);
+            return back()->with('success', 'Vous avez aimé cet article.');
+        }
+    }
+
 }
