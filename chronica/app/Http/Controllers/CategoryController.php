@@ -1,82 +1,48 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use App\Models\Article;
-use App\Models\Tag;
 
 class CategoryController extends Controller
 {
     public function index()
     {
         $categories = Category::all();
-        return view('admin.categories.index', compact('categories'));
-    }
-
-    public function create()
-    {
-        return view('admin.categories.create');
+        return redirect()->route('admin.dashboard');
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:categories|max:255',
-            'description' => 'nullable',
+            'name' => 'required|string|max:255',
+            'slug' => 'required|string|unique:categories,slug',
+            'description' => 'nullable|string',
         ]);
 
-        Category::create([
-            'name' => $request->name,
-            'slug' => Str::slug($request->name),
-            'description' => $request->description,
-        ]);
+        Category::create($request->all());
 
-        return redirect()->route('admin.categories.index')->with('success', 'Catégorie ajoutée avec succès.');
+        return redirect()->route('categories.index')->with('success', 'Catégorie ajoutée avec succès');
     }
 
-    public function edit(Category $category)
+    public function update(Request $request, $id)
     {
-        return view('admin.categories.edit', compact('category'));
-    }
-
-    public function update(Request $request, Category $category)
-    {
+        $category = Category::findOrFail($id);
         $request->validate([
-            'name' => 'required|max:255|unique:categories,name,' . $category->id,
-            'description' => 'nullable',
+            'name' => 'required|string|max:255',
+            'slug' => 'required|string|unique:categories,slug,' . $id,
+            'description' => 'nullable|string',
         ]);
 
-        $category->update([
-            'name' => $request->name,
-            'slug' => Str::slug($request->name),
-            'description' => $request->description,
-        ]);
+        $category->update($request->all());
 
-        return redirect()->route('admin.categories.index')->with('success', 'Catégorie mise à jour.');
+        return redirect()->to('http://127.0.0.1:8000/admin/dashboard')->with('success', 'Catégorie mise à jour avec succès');
+       
     }
 
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        $category->delete();
-        return redirect()->route('admin.categories.index')->with('success', 'Catégorie supprimée.');
-    }
-    public function show($slug)
-    {
-        // Récupérer la catégorie par son slug
-        $category = Category::where('slug', $slug)->firstOrFail();
-        $categorys = Category::all();
-        // Récupérer les articles en vedette de la catégorie
-        $featuredArticles = Article::where('category_id', $category->id)
-            ->where('is_featured', true) // Si vous avez une colonne pour savoir si l'article est en vedette
-            ->paginate(6); // Nombre d'articles à afficher par page
-
-        // Récupérer tous les tags pour l'affichage des tags
-        $tags = Tag::all();
-
-        return view('category.show', compact('category','categorys', 'featuredArticles', 'tags'));
+        Category::findOrFail($id)->delete();
+        return redirect()->route('categories.index')->with('success', 'Catégorie supprimée avec succès');
     }
 }

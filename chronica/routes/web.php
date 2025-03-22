@@ -85,12 +85,21 @@ Route::middleware(['auth'])->group(function () {
 
     // Gestion des commentaires
     Route::get('/admin/comments', [AdminController::class, 'comments'])->name('admin.comments');
+    
+
 });
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 });
+Route::middleware(['auth'])->prefix('admin')->group(function () {
+    Route::resource('categories', CategoryController::class);
+});
+
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+ 
+ 
+
  

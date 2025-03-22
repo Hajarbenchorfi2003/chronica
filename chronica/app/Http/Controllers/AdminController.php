@@ -29,6 +29,7 @@ $recentArticles = Article::latest()->take(5)->get();
 
 // ✅ Récupérer les 5 derniers commentaires
 $recentComments = Comment::latest()->take(5)->get();
+$categories=Category::all();
         // Récupérer les données nécessaires
         $data = [
             'totalUsers' => User::count(),
@@ -38,7 +39,7 @@ $recentComments = Comment::latest()->take(5)->get();
             'pendingComments' => Comment::where('status', 'pending')->count(),
         ];
 
-        return view('admin.dashboard', $data, compact('totalCategories', 'activeUsers', 'recentArticles', 'recentComments'));
+        return view('admin.dashboard', $data, compact('totalCategories', 'activeUsers', 'recentArticles', 'recentComments','categories'));
     }
 
     public function users()

@@ -4,7 +4,10 @@
 
 @section('content')
 <div class="container mt-4">
-
+<!-- Bouton Ajouter Catégorie -->
+<button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+    Ajouter une Catégorie
+</button>
  
 <!-- Statistiques générales -->
 <div class="row mb-4">
@@ -100,7 +103,114 @@
             </ul>
         </div>
     </div>
+
+    <!-- Tableau des Catégories -->
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Slug</th>
+                <th>description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($categories as $category)
+                <tr>
+                    <td>{{ $category->name }}</td>
+                    <td>{{ $category->slug }}</td>
+                    <td>{{ $category->description }}</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" onclick="editCategory({{ $category }})" data-bs-toggle="modal" data-bs-target="#editCategoryModal">Modifier</button>
+                        <form action="{{ route('categories.destroy', $category->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+
 </div>
+<!-- MODAL AJOUTER CATÉGORIE -->
+<div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCategoryModalLabel">Ajouter une Catégorie</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('categories.store') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="categoryName" class="form-label">Nom de la Catégorie</label>
+                        <input type="text" class="form-control" id="categoryName" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="categorySlug" class="form-label">Slug</label>
+                        <input type="text" class="form-control" id="categorySlug" name="slug" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="categorydescription" class="form-label">description</label>
+                        <input type="text" class="form-control" id="categorydescription" name="description" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Ajouter</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL ÉDITER CATÉGORIE -->
+<div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editCategoryModalLabel">Modifier la Catégorie</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editCategoryForm" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <input type="hidden" id="editCategoryId" name="id">
+                    <div class="mb-3">
+                        <label for="editCategoryName" class="form-label">Nom de la Catégorie</label>
+                        <input type="text" class="form-control" id="editCategoryName" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editCategorySlug" class="form-label">Slug</label>
+                        <input type="text" class="form-control" id="editCategorySlug" name="slug" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="categorydescription" class="form-label">description</label>
+                        <input type="text" class="form-control" id="editCategorydescription" name="description" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-warning">Modifier</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function editCategory(category) {
+        document.getElementById('editCategoryId').value = category.id;
+        document.getElementById('editCategoryName').value = category.name;
+        document.getElementById('editCategorySlug').value = category.slug;
+        document.getElementById('editCategorydescription').value = category.description;
+        document.getElementById('editCategoryForm').action = '/categories/' + category.id;
+    }
+</script>
 @endsection
  
 

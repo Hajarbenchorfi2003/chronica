@@ -77,7 +77,6 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"> {{ Auth::user()->name }}  </a>
                         <div class="dropdown-menu rounded-0 m-0">
-                            <a class="dropdown-item" href="/profile">Profil</a>
                             <form action="{{ route('logout') }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('POST')
