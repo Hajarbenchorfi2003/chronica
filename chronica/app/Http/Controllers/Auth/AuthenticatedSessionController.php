@@ -10,14 +10,39 @@ class AuthenticatedSessionController extends Controller
     /**
      * Supprimer la session de l'utilisateur.
      */
+    /**
+     * Gérer la redirection après l'authentification.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        // Vérifiez le rôle de l'utilisateur
+        if ($user->role === 'admin') {
+            return redirect()->route('admin'); // Rediriger vers le tableau de bord pour les administrateurs
+        }
+
+        return redirect('/'); // Rediriger vers la page d'accueil pour les autres utilisateurs
+    }
     public function destroy(Request $request)
     {
-        Auth::logout(); // Déconnexion de l'utilisateur
-        $request->session()->invalidate(); // Invalidate session
-        $request->session()->regenerateToken(); // Regenerate CSRF token
+        // Récupérer l'utilisateur connecté
+        $user = Auth::user();
 
-        return redirect('/'); // Redirection après déconnexion
+        // Déconnexion de l'utilisateur
+        Auth::logout();
+        
+        // Invalidate session
+        $request->session()->invalidate();
+        
+        // Regenerate CSRF token
+        $request->session()->regenerateToken();
+
+        // Vérifier le rôle de l'utilisateur et rediriger en conséquence
+         
+
+        // Redirection vers la page d'accueil pour les autres utilisateurs
+        return redirect('/');
     }
-   
-   
 }

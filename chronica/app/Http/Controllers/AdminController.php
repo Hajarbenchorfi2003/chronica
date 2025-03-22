@@ -20,9 +20,9 @@ class AdminController extends Controller
         }
 
         $totalArticles = Article::count();
-        $publishedArticles = Article::where('status', 'published')->count(); // Assuming 'status' is the field that determines whether an article is published
+        $publishedArticles = Article::where('status', 'published')->count();  
         $totalCategories = Category::count();
-          $activeUsers = User::where('status', 'active')->count();
+        $activeUsers = User::where('status', 'active')->count();
 
 // ✅ Récupérer les 5 articles les plus récents
 $recentArticles = Article::latest()->take(5)->get();

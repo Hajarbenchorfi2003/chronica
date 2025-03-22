@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
+
+
 
 use App\Http\Controllers\Controller;
 use App\Models\Tag;
@@ -33,7 +35,14 @@ class TagController extends Controller
 
         return redirect()->route('admin.tags.index')->with('success', 'Tag ajouté.');
     }
-
+    public function show($slug)
+    {
+        $tag = Tag::where('slug', $slug)->firstOrFail();
+        $articles = $tag->articles()->paginate(10);
+    
+        return view('admin.tags.show', compact('tag', 'articles'));
+    }
+    
     public function edit(Tag $tag)
     {
         return view('admin.tags.edit', compact('tag'));

@@ -9,22 +9,22 @@
             <div class="col-lg-8">
                 <!-- News Detail Start -->
                 <div class="position-relative mb-3">
-                    <img class="img-fluid w-100" src="{{ $article->image_url }}" style="object-fit: cover;">
+                    <img class="img-fluid w-100" src="{{ asset( $article->cover_image) }}" style="object-fit: cover;">
                     <div class="overlay position-relative bg-light">
                         <div class="mb-3">
-                            <a href="#">{{ $article->category }}</a>
+                            <a href="#">{{ $article->category->name }}</a>
+                            
                             <span class="px-1">/</span>
                             <span>{{ $article->created_at->format('F d, Y') }}</span>
                         </div>
                         <div>
                             <h3 class="mb-3">{{ $article->title }}</h3>
                             <p>{{ $article->content }}</p>
-                            <h4 class="mb-3">{{ $article->subtitle }}</h4>
-                            <img class="img-fluid w-50 float-left mr-4 mb-2" src="{{ $article->image_2 }}">
-                            <p>{{ $article->additional_content }}</p>
-                            <h5 class="mb-3">{{ $article->further_subtitle }}</h5>
-                            <img class="img-fluid w-50 float-right ml-4 mb-2" src="{{ $article->image_3 }}">
-                            <p>{{ $article->further_content }}</p>
+                            <h4 class="mb-3">{{ $article->slug }}</h4>
+                            <img class="img-fluid w-50 float-left mr-4 mb-2" src="{{ asset( $article->cover_image) }}">
+                            <p>{{ $article->content }}</p>
+                            <h5 class="mb-3">{{ $article->excerpt }}</h5>
+                            
                         </div>
                     </div>
                 </div>
@@ -52,22 +52,18 @@
                     <form action="{{ route('comments.store', $article->id) }}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <label for="name">Name *</label>
-                            <input type="text" class="form-control" id="name" name="name">
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email *</label>
-                            <input type="email" class="form-control" id="email" name="email">
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Message *</label>
-                            <textarea id="message" cols="30" rows="5" class="form-control" name="message"></textarea>
+                            <label for="content">Your Comment *</label>
+                            <textarea id="content" cols="30" rows="5" class="form-control" name="content">{{ old('content') }}</textarea>
                         </div>
                         <div class="form-group mb-0">
-                            <input type="submit" value="Leave a comment" class="btn btn-primary font-weight-semi-bold py-2 px-3">
+                            <input type="submit" value="Post Comment" class="btn btn-primary font-weight-semi-bold py-2 px-3">
                         </div>
                     </form>
+                
+                    
                 </div>
+                
+                
                 <!-- Comment Form End -->
             </div>
 
@@ -78,8 +74,8 @@
                         <h3 class="m-0">Tags</h3>
                     </div>
                     <div class="d-flex flex-wrap m-n1">
-                        @foreach($tags as $tag)
-                            <a href="{{ route('tag.show', $tag->id) }}" class="btn btn-sm btn-outline-secondary m-1">{{ $tag->name }}</a>
+                        @foreach($article->tags as $tag)
+                            <a href="{{ route('articles.byTag', $tag->id) }}" class="btn btn-sm btn-outline-secondary m-1">{{ $tag->name }}</a>
                         @endforeach
                     </div>
                 </div>

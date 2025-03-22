@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->text('content');
             $table->text('excerpt');
-            $table->string('cover_image');
+            $table->string('cover_image')->nullable();
             $table->foreignId('category_id')->nullable()->constrained()->onDelete('set null'); 
             $table->foreignId('author_id')->constrained('users')->onDelete('cascade');
             $table->enum('status', ['draft', 'published'])->default('draft');

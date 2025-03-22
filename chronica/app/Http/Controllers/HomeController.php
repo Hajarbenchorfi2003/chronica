@@ -17,12 +17,16 @@ class HomeController extends Controller
 
      public function index()
      {
-         
-         $featuredArticles = Article::where('status', 'published')->latest()->take(5)->get();
-         $categories = Category::with('articles')->get();
+        if (Auth::check() && Auth::user()->role === 'admin') {
+             return view('admin.dashboard');
+        }
      
-         return view('home', compact('featuredArticles', 'categories'));
+        $featuredArticles = Article::where('status', 'published')->latest()->take(5)->get();
+        $categories = Category::with('articles')->get();
+     
+        return view('home', compact('featuredArticles', 'categories'));
      }
+     
 }
  
 

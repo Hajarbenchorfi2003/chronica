@@ -9650,3 +9650,13 @@ h6,
   padding: 0;
   list-style-type: none;
 }
+.owl-carousel .owl-item img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1 !important;
+}
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1 !important;
+}

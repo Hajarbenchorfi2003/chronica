@@ -1,8 +1,40 @@
 <!-- resources/views/home.blade.php -->
 
-@extends('layouts.main')
+ @extends('layouts.main')
 
-@section('content')
+@section('content') 
+ <!-- Top News Slider Start -->
+ <div class="container-fluid py-3">
+    <div class="container">
+        <div class="owl-carousel owl-carousel-2 carousel-item-3 position-relative">
+            <div class="d-flex">
+                <img src="assest/img/news-100x100-1.jpg" style="width: 80px; height: 80px; object-fit: cover;">
+                <div class="d-flex align-items-center bg-light px-3" style="height: 80px;">
+                    <a class="text-secondary font-weight-semi-bold" href="">Lorem ipsum dolor sit amet consec adipis elit</a>
+                </div>
+            </div>
+            <div class="d-flex">
+                <img src="assest/img/news-100x100-2.jpg" style="width: 80px; height: 80px; object-fit: cover;">
+                <div class="d-flex align-items-center bg-light px-3" style="height: 80px;">
+                    <a class="text-secondary font-weight-semi-bold" href="">Lorem ipsum dolor sit amet consec adipis elit</a>
+                </div>
+            </div>
+            <div class="d-flex">
+                <img src="assest/img/news-100x100-3.jpg" style="width: 80px; height: 80px; object-fit: cover;">
+                <div class="d-flex align-items-center bg-light px-3" style="height: 80px;">
+                    <a class="text-secondary font-weight-semi-bold" href="">Lorem ipsum dolor sit amet consec adipis elit</a>
+                </div>
+            </div>
+            <div class="d-flex">
+                <img src="assest/img/news-100x100-4.jpg" style="width: 80px; height: 80px; object-fit: cover;">
+                <div class="d-flex align-items-center bg-light px-3" style="height: 80px;">
+                    <a class="text-secondary font-weight-semi-bold" href="">Lorem ipsum dolor sit amet consec adipis elit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Top News Slider End -->
     <!-- Main News Section Start -->
       <div class="container-fluid py-3">
         <div class="container">
@@ -12,7 +44,7 @@
                     <div class="owl-carousel owl-carousel-2 carousel-item-1 position-relative mb-3 mb-lg-0">
                         @foreach($featuredArticles as $article)
                             <div class="position-relative overflow-hidden" style="height: 435px;">
-                                <img class="img-fluid h-100" src="{{ asset('storage/' . $article->cover_image) }}" style="object-fit: cover;">
+                                <img class="img-fluid h-100" src="{{ asset( $article->cover_image) }}" style="object-fit: cover;">
                                 <div class="overlay">
                                     <div class="mb-1">
                                         <a class="text-white" href="#">{{ $article->category->name ?? 'Uncategorized' }}</a>
@@ -30,13 +62,13 @@
                     <!-- Categories Section -->
                     <div class="d-flex align-items-center justify-content-between bg-light py-2 px-4 mb-3">
                         <h3 class="m-0">Categories</h3>
-                          {{-- <a class="text-secondary font-weight-medium text-decoration-none" href="{{ route('categories.index') }}">View All</a> --}} 
+                           
                     </div>
 
                     @foreach($categories as $category)
                         <div class="position-relative overflow-hidden mb-3" style="height: 80px;">
-                            <img class="img-fluid w-100 h-100" src="{{ asset('storage/' . $category->image) }}" style="object-fit: cover;">
-                             <a href="{{ route('categories.show', $category->slug) }}" class="overlay align-items-center justify-content-center h4 m-0 text-white text-decoration-none">
+                            <img class="img-fluid w-100 h-100" src="{{ asset('assest/img/cat-500x80-4.jpg') }}" style="object-fit: cover;">
+                             <a href="{{ route('articles.byCategory', $category->slug) }}" class="overlay align-items-center justify-content-center h4 m-0 text-white text-decoration-none">
                                 {{ $category->name }}
                             </a> 
                         </div>
@@ -57,7 +89,7 @@
             <div class="owl-carousel owl-carousel-2 carousel-item-4 position-relative">
                 @foreach($featuredArticles as $article)
                     <div class="position-relative overflow-hidden" style="height: 300px;">
-                        <img class="img-fluid w-100 h-100" src="{{ asset('storage/' . $article->cover_image) }}" style="object-fit: cover;">
+                        <img class="img-fluid w-100 h-100" src="{{ asset( $article->cover_image) }}" style="object-fit: cover;">
                         <div class="overlay">
                             <div class="mb-1" style="font-size: 13px;">
                                  <a class="text-white" href="#">{{ $article->category->name ?? 'Uncategorized' }}</a>
@@ -85,10 +117,10 @@
                         <div class="owl-carousel owl-carousel-3 carousel-item-2 position-relative">
                             @foreach($category->articles as $article)
                                 <div class="position-relative">
-                                    <img class="img-fluid w-100" src="{{ asset('storage/' . $article->cover_image) }}" style="object-fit: cover;">
+                                    <img class="img-fluid w-100" src="{{ asset( $article->cover_image) }}" style="object-fit: cover;">
                                     <div class="overlay position-relative bg-light">
                                         <div class="mb-2" style="font-size: 13px;">
-                                             <a href="{{ route('categories.show', $category->slug) }}">{{ $category->name }}</a> 
+                                             <a href="{{ route('articles.byCategory', $category->slug) }}">{{ $category->name }}</a> 
                                             <span class="px-1">/</span>
                                             <span>{{ $article->created_at->format('M d, Y') }}</span>
                                         </div>
@@ -103,4 +135,4 @@
         </div>
     </div>
     <!-- Category-wise Articles End -->
-@endsection
+ @endsection 

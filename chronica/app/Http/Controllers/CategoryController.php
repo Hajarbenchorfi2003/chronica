@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
@@ -68,7 +68,7 @@ class CategoryController extends Controller
     {
         // Récupérer la catégorie par son slug
         $category = Category::where('slug', $slug)->firstOrFail();
-
+        $categorys = Category::all();
         // Récupérer les articles en vedette de la catégorie
         $featuredArticles = Article::where('category_id', $category->id)
             ->where('is_featured', true) // Si vous avez une colonne pour savoir si l'article est en vedette
@@ -77,6 +77,6 @@ class CategoryController extends Controller
         // Récupérer tous les tags pour l'affichage des tags
         $tags = Tag::all();
 
-        return view('category.show', compact('category', 'featuredArticles', 'tags'));
+        return view('category.show', compact('category','categorys', 'featuredArticles', 'tags'));
     }
 }

@@ -25,14 +25,13 @@
                         <div class="col-12">
                             <div class="d-flex align-items-center justify-content-between bg-light py-2 px-4 mb-3">
                                 <h3 class="m-0">{{$category->name}}</h3>
-                                <a class="text-secondary font-weight-medium text-decoration-none" href="">View All</a>
                             </div>
                         </div>
                         <div class="d-flex flex-wrap">  
                             @foreach($featuredArticles as $article)
                                 <div class="col-lg-6">
                                     <div class="position-relative mb-3">
-                                        <img class="img-fluid w-100" src="{{ asset('storage/' . $article->cover_image) }}" style="object-fit: cover;">
+                                        <img class="img-fluid w-100" src="{{ asset( $article->cover_image) }}" style="object-fit: cover;">
                                         <div class="overlay position-relative bg-light">
                                             <div class="mb-2" style="font-size: 14px;">
                                                 <a href="#">{{ $article->category->name ?? 'Uncategorized' }}</a>
@@ -40,7 +39,7 @@
                                                 <span>{{ $article->created_at->format('M d, Y') }}</span>
                                             </div>
                                             <a class="h4" href="{{ route('articles.show', $article->slug) }}">{{ $article->title }}</a>
-                                            <p class="m-0">{{ $article->summary }}</p>
+                                            <p class="m-0">{{ $article->excerpt }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -60,32 +59,17 @@
                 <div class="col-lg-4">
                     <div class="d-flex align-items-center justify-content-between bg-light py-2 px-4 mb-3">
                         <h3 class="m-0">Categories</h3>
-                        <a class="text-secondary font-weight-medium text-decoration-none" href="">View All</a>
                     </div>
+                    @foreach($categorys as $cta)
                     <div class="position-relative overflow-hidden mb-3" style="height: 80px;">
-                        <img class="img-fluid w-100 h-100" src="img/cat-500x80-1.jpg" style="object-fit: cover;">
-                        <a href="" class="overlay align-items-center justify-content-center h4 m-0 text-white text-decoration-none">
-                            Business
+                        <img class="img-fluid w-100 h-100" src="{{ asset('assest/img/cat-500x80-4.jpg') }}" style="object-fit: cover;">
+                        <a href="{{ route('articles.byCategory', $cta->slug) }}" class="overlay align-items-center justify-content-center h4 m-0 text-white text-decoration-none">
+                            {{$cta->name}}
                         </a>
                     </div>
-                    <div class="position-relative overflow-hidden mb-3" style="height: 80px;">
-                        <img class="img-fluid w-100 h-100" src="img/cat-500x80-2.jpg" style="object-fit: cover;">
-                        <a href="" class="overlay align-items-center justify-content-center h4 m-0 text-white text-decoration-none">
-                            Technology
-                        </a>
-                    </div>
-                    <div class="position-relative overflow-hidden mb-3" style="height: 80px;">
-                        <img class="img-fluid w-100 h-100" src="img/cat-500x80-3.jpg" style="object-fit: cover;">
-                        <a href="" class="overlay align-items-center justify-content-center h4 m-0 text-white text-decoration-none">
-                            Entertainment
-                        </a>
-                    </div>
-                    <div class="position-relative overflow-hidden" style="height: 80px;">
-                        <img class="img-fluid w-100 h-100" src="img/cat-500x80-4.jpg" style="object-fit: cover;">
-                        <a href="" class="overlay align-items-center justify-content-center h4 m-0 text-white text-decoration-none">
-                            Sports
-                        </a>
-                    </div>
+                    @endforeach 
+                    
+                    
                 </div>
                 <div class="col-lg-4 pt-3 pt-lg-0">
                     <!-- Social Follow Start -->
@@ -127,7 +111,7 @@
                         </div>
                         <div class="d-flex flex-wrap">
                             @foreach($tags as $tag)
-                                <a href="{{ route('tag.show', $tag->slug) }}" class="btn btn-sm btn-outline-secondary m-1">{{ $tag->name }}</a>
+                                <a href="{{ route('articles.byTag', $tag->slug) }}" class="btn btn-sm btn-outline-secondary m-1">{{ $tag->name }}</a>
                             @endforeach
                         </div>
                     </div>

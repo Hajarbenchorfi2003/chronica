@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Providers;
-
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Auth\Events\Login;
+use App\Models\Category;
+use App\Models\Tag;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -21,6 +23,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-       
+        View::composer('layouts.main', function ($view) {
+            $view->with('categories', Category::all());
+            $view->with('tags', Tag::all());
+        });
+        
     }
 }
